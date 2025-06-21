@@ -20,11 +20,8 @@ class InitializeRequestParams:
 
 @dataclass_json
 @dataclass
-class InitializeRequest:
-    jsonrpc: str
-    id: int | str
+class InitializeRequest(message.Request):
     params: InitializeRequestParams
-    method: str
 
 @dataclass_json
 @dataclass
@@ -36,6 +33,7 @@ class ServerInfo:
 @dataclass
 class ServerCapabilities:
     textDocumentSync: int
+    hoverProvider: bool
 
 @dataclass_json
 @dataclass
@@ -54,7 +52,10 @@ def newInitializeResponse(id: int) -> InitializeResponse:
         "2.0", 
         id, 
         InitializeResult(
-            ServerCapabilities(textDocumentSync=1), 
+            ServerCapabilities(
+                textDocumentSync=1, 
+                hoverProvider=True,
+            ), 
             ServerInfo(
                 "python-lsp-chris", 
                 "7.2.2-aa"

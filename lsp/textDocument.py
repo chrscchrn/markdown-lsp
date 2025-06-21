@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
-from typing import List
+from typing import Any, List, Optional
 from lsp import message
 
 @dataclass_json
@@ -47,3 +47,59 @@ class DidChangeTextDocumentParams:
 @dataclass
 class DidChangeTextDocumentNotification(message.Notification):
     params: DidChangeTextDocumentParams
+
+@dataclass_json
+@dataclass
+class Position:
+    line: int
+    character: int
+
+@dataclass_json
+@dataclass
+class TextDocumentPositionParams:
+    textDocument: TextDocumentIdentifier
+    position: Position
+
+@dataclass_json
+@dataclass
+class WorkDoneProgressParams:
+    workDoneToken: Optional[int] | Optional[str] = None
+
+@dataclass_json
+@dataclass
+class HoverParams(WorkDoneProgressParams, TextDocumentPositionParams):
+    _: Optional[Any] = None
+
+@dataclass_json
+@dataclass
+class HoverRequest(message.Request):
+    params: HoverParams
+
+@dataclass_json
+@dataclass
+class Range:
+    start: Position
+    end: Position
+
+@dataclass_json
+@dataclass
+class MarkedStringObject:
+    language: str
+    value: str
+
+@dataclass_json
+@dataclass
+class MarkupContent:
+    kind: str
+
+@dataclass_json
+@dataclass
+class Hover:
+    contents: str | List[str] | MarkedStringObject | List[MarkedStringObject] | MarkupContent
+    range: Optional[Range] = None
+
+@dataclass_json
+@dataclass
+class HoverResponse(message.Response):
+    result: Hover
+

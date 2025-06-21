@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 from dataclasses_json import dataclass_json
-from typing import Any, List, Optional, Dict
 
 
 @dataclass_json
@@ -13,7 +12,6 @@ class Message:
 class Request(Message):
     id: int | str
     method: str
-    params: Optional[List] | Optional[Dict]
 
 @dataclass_json
 @dataclass
